@@ -36,3 +36,103 @@
     transform: rotate(360deg);
   }
 }
+
+
+.nav_menu{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+}
+.nav_main_div{
+  background-color: #aeaee7;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ul.nav_menu li a {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.footer_container {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  background-color: #aeaee7;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.sign_up_form_div {
+  display: inline-grid;
+}
+
+.sign_up_form_div input{
+  height: 35px;
+    width: 400px;
+    border-radius: 5px;
+    border: 1px solid black;
+    margin: 10px 0px;
+}
+.sign_up_form_div #submit{
+  cursor: pointer;
+}
+.hide{
+  display: none;
+}
+
+.form-group input {
+  padding: 10px;
+  width: 20%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid;
+}
+button#login_btn {
+  width: 10%;
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.text-capitalize{
+  text-transform: capitalize;
+  color : #fff;
+}
+
+.logo img {
+  width: 46px;
+  margin-top: 10px;
+}
+
+.input-group input {
+  padding: 10px;
+  width: 20%;
+  margin: 5px;
+}
+.input-group .add_btn {
+  padding: 10px;
+  width: 10%;
+  text-align: center;
+  background: #5454a2;
+  color: #fff;
+  border: none;
+}
+
+/* .error_div{
+  margin-right: 10rem;
+  margin-bottom: 1rem;
+} */
+.error_div span{
+  color : red;
+}
+.product_list_div {
+  display: grid;
+}
