@@ -73,8 +73,57 @@ app.post('/add-product', async (req,resp) => {
  */
 app.get('/get-products', async (req,resp) => {
     var result = await Product.find();
+    if(result.length > 0){
+        resp.send(result);
+    }else{
+        resp.send({result:"Data Not Found"});
+    }
+});
+
+/**
+ * delete
+ */
+app.delete('/product/:id', async (req,resp) =>{
+    const result = await Product.deleteOne({_id:req.params.id});
     resp.send(result);
 });
 
+/**
+ * edit
+ */
+app.get('/product/:id', async (req,resp)=>{
+    const result = await Product.findOne({_id : req.params.id});
+    if(result){
+        resp.send(result);
+    }else{
+        resp.send({result:"No Record Found"});
+    }
+});
+
+/**
+ * update
+ */
+app.put('/product/:id', async (req,resp) =>{
+    const result = await Product.updateOne(
+        { _id   : req.params.id },
+        { $set  : req.body  }
+    )
+    resp.send(result);
+});
+
+/**
+ * search
+ */
+app.get('/search/:key', async (req,resp) =>{
+    var result = await Product.find({
+        "$or" : [
+            {name:{$regex: req.params.key}},
+            { price: { $regex: req.params.key } },
+            { category: { $regex: req.params.key } },
+            { company: { $regex: req.params.key } },
+        ]
+    });
+    resp.send(result);
+});
 
 app.listen(8000); //run on localhost:8000

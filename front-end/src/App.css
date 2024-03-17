@@ -136,3 +136,21 @@ button#login_btn {
 .product_list_div {
   display: grid;
 }
+.flex{
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+button.cancal_btn{
+  padding: 10px;
+  width: 10%;
+  text-align: center;
+  background: #5454a2;
+  color: #fff;
+  border: none;
+  margin-left: 5px;
+}
+
+.search_input{
+  padding: 10px;width: 200px;margin-top: 20px;
+}
