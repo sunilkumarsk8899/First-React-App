@@ -6,10 +6,15 @@ const ProductList = () => {
 
     useEffect(() =>{
         getProduct();
+        console.log(localStorage.getItem('token'));
     },[]);
     
     const getProduct = async () => {
-        var result = await fetch('http://localhost:8000/get-products');
+        var result = await fetch('http://localhost:8000/get-products',{
+            headers : {
+                authorization : JSON.parse(localStorage.getItem('token')),
+            }
+        });
         result = await result.json();
         setProducts(result);
     }
@@ -51,7 +56,11 @@ const ProductList = () => {
      */
     const searchProduct = async (val) =>{
         if(val){
-            var result = await fetch(`http://localhost:8000/search/${val}`);
+            var result = await fetch(`http://localhost:8000/search/${val}`,{
+                headers : {
+                    authorization : JSON.parse(localStorage.getItem('token')),
+                }
+            });
             result = await result.json();
             setProducts(result);
         }else{

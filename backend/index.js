@@ -16,6 +16,8 @@ connectDB();*/
 
 const User = require('./db/User');
 const Product = require('./db/AddProduct');
+const Jwt = require('jsonwebtoken');
+const JwtKey = 'e-comm';
 
 const cors = require('cors');
 
@@ -38,7 +40,13 @@ app.post('/register', async (req,resp) => {
         var result = await user.save();
         result = result.toObject();
         delete result.password;
-        resp.send(result);
+        Jwt.sign({result}, JwtKey, { expiresIn: "2h" }, (err,token)=>{
+            if(err){
+                resp.send( { message : 'Somthing went wrong' } );
+            }else{
+                resp.send( { message : "is_login", data : result, status : 200, auth : token } );
+            }
+        });
     }
 });
 
@@ -49,7 +57,13 @@ app.post('/login', async (req,resp) => {
     if(req.body.email && req.body.password){
         const user = await User.findOne(req.body).select('-password'); // all fields get but password field not get
         if(user){
-            resp.send( { message : 'User Found', data : user, status : 200 } ); // user found
+            Jwt.sign({user}, JwtKey, { expiresIn: "2h" },(err,token)=>{
+                if(err){
+                    resp.send( { message : 'Somthing Went Wrong', status : 404 } ); // somthing wont wrong                    
+                }else{
+                    resp.send( { message : 'User Found', data : user, status : 200,auth : token } ); // user found
+                }
+            });
         }else{
             resp.send( { message : 'User Not Found', status : 404 } ); // user not found
         }
@@ -114,7 +128,7 @@ app.put('/product/:id', async (req,resp) =>{
 /**
  * search
  */
-app.get('/search/:key', async (req,resp) =>{
+app.get('/search/:key', verifyToken, async (req,resp) =>{
     var result = await Product.find({
         "$or" : [
             {name:{$regex: req.params.key}},
@@ -125,5 +139,25 @@ app.get('/search/:key', async (req,resp) =>{
     });
     resp.send(result);
 });
+
+
+/**
+ * verify toke
+ */
+function verifyToken(req,resp,next){
+    var token = req.headers['authorization'];
+    if(token){
+        // token = token.split(" ")[1];
+        Jwt.verify(token,JwtKey,(err,valid)=>{
+            if(err){
+                resp.status(401).send({result : 'Invalid Token'});
+            }else{
+                next();
+            }
+        });
+    }else{
+        resp.status(404).send({result : 'Please provide token'});
+    }
+}
 
 app.listen(8000); //run on localhost:8000

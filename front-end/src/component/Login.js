@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -8,7 +8,7 @@ const Login = () => {
         if(auth){ 
             navigate('/'); // if user login and register after than redirect to home other wise open this sign up page 
         }
-    },[]);
+    });
 
     const [email,setEmail] = React.useState('');
     const [password,setPassword] = React.useState('');
@@ -23,8 +23,9 @@ const Login = () => {
                 }
             });
             result = await result.json();
-            if(result.status == 200){
+            if(result.status === 200 && result.auth){
                 localStorage.setItem('userData',JSON.stringify(result.data));
+                localStorage.setItem('token',JSON.stringify(result.auth));
                 navigate('/');
             }else{
                 alert('somthing went wrong');
